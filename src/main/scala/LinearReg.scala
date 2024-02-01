@@ -1,4 +1,4 @@
-package com.bdec.training.sparkscala
+package org.example.scala
 
 import org.apache.spark.ml.evaluation.RegressionEvaluator
 import org.apache.spark.sql.{Dataset, Row, SparkSession}
@@ -53,6 +53,8 @@ object LinearReg {
     testPredictionsDf.show()
     val evaluator = new RegressionEvaluator().setMetricName("rmse").evaluate(testPredictionsDf)
     println("RMSE = " + evaluator)
+
+//    RMSE = 196137.12954747054
 
   }
 
