@@ -16,7 +16,7 @@ object Assignment1 {
                                     ,State: String, Country: String , Category: String, SubCategory: String, Sales: String
                                     ,Quantity: Int, Discount: Double,Profit: Double, ShippingCost: Double, Returns: String)
   def main(args: Array[String]): Unit = {
-    val winutilPath = "G:\\Ashok\\TRAININGS\\JIGSAW\\PACKAGES\\winutils"
+    val winutilPath = "H:\\Ashok\\TRAINING\\JIGSAW\\winutils"
 
     if (System.getProperty("os.name").toLowerCase.contains("win")) {
       System.out.println("Detected windows")
