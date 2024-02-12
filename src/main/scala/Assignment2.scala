@@ -13,7 +13,7 @@ object Assignment2 {
       .add(new StructField("temperature", DataTypes.StringType, false))
       .add(new StructField("timestamp", DataTypes.TimestampType, false))
 
-    val deviceDf = spark.readStream.option("header", "true").schema(deviceSchema).csv("file:///H:\\Ashok\\TRAINING\\JIGSAW\\TEST_FILES\\STREAM_FILES")
+    val deviceDf = spark.readStream.option("header", "true").schema(deviceSchema).csv("file:///E:\\JIGSAW\\TEST_FILES\\STREAM_FILES")
     deviceDf
   }
   def read_device_max_temp(spark: SparkSession): DataFrame = {
@@ -21,7 +21,7 @@ object Assignment2 {
       .add(new StructField("device_id", DataTypes.StringType, false))
       .add(new StructField("max_temp", DataTypes.StringType, false))
 
-    val deviceMaxDf = spark.readStream.schema(deviceMaxTempSchema).csv("file:///H:\\Ashok\\TRAINING\\JIGSAW\\TEST_FILES\\STREAM_FILES")
+    val deviceMaxDf = spark.readStream.schema(deviceMaxTempSchema).csv("file:///E:\\JIGSAW\\TEST_FILES\\STREAM_FILES")
     deviceMaxDf
   }
 
@@ -38,7 +38,7 @@ object Assignment2 {
   }
 
   def join_static(spark: SparkSession): Unit = {
-    val max_tempDf = spark.read.option("header", "true").csv("file:///H:\\Ashok\\TRAINING\\JIGSAW\\TEST_FILES\\STATIC_FILES\\max_temperature_devices.csv")
+    val max_tempDf = spark.read.option("header", "true").csv("file:///E:\\JIGSAW\\TEST_FILES\\STATIC_FILES\\max_temperature_devices.csv")
     val max_tempDfW = max_tempDf.withColumnRenamed("device_id", "max_device_id")
     val device_tempDf = read_device_temp(spark)
     val joinedWordsDf = device_tempDf.join(max_tempDfW, device_tempDf.col("device_id") === max_tempDfW.col("max_device_id"), "left_outer")
@@ -47,7 +47,7 @@ object Assignment2 {
   }
 
   def main(args: Array[String]): Unit = {
-    val winutilPath = "H:\\Ashok\\TRAINING\\JIGSAW\\winutils"
+    val winutilPath = "E:\\JIGSAW\\winutils"
 
     if (System.getProperty("os.name").toLowerCase.contains("win")) {
       System.out.println("Detected windows")
@@ -62,7 +62,10 @@ object Assignment2 {
     spark.conf.set("spark.sql.shuffle.partitions", "2")
     spark.sparkContext.setLogLevel("WARN")
 
-     join_static(spark)
+//     join_static(spark)
 //    join_device_temp_expr(spark)
+
+    val query = read_device_temp(spark).writeStream.outputMode("complete").format("console").start
+    query.awaitTermination()
   }
 }
